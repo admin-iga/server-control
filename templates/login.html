@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServerControl - Login</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="login-page">
+    <!-- Animated Background -->
+    <div class="background-animation">
+        <div class="grid-overlay"></div>
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
+
+    <!-- Particle Container -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Login Container -->
+    <div class="login-container">
+        <div class="login-card">
+            <!-- Logo and Header -->
+            <div class="login-header">
+                <div class="logo-wrapper">
+                    <div class="logo-icon-container">
+                        <span class="logo-icon">⚡</span>
+                        <div class="logo-pulse"></div>
+                    </div>
+                    <h1 class="logo-text">ServerControl</h1>
+                </div>
+                <p class="subtitle">Server Management Dashboard</p>
+                <div class="header-line"></div>
+            </div>
+
+            <!-- Login Form -->
+            <form class="login-form" id="loginForm">
+                <!-- Error Message Container -->
+                {% if error %}
+                <div class="error-message" id="errorMessage">
+                    <span class="error-icon">⚠️</span>
+                    <span>{{ error }}</span>
+                </div>
+                {% endif %}
+                <div class="error-message hidden" id="errorMessageJs">
+                    <span class="error-icon">⚠️</span>
+                    <span id="errorText"></span>
+                </div>
+
+                <!-- Password Input -->
+                <div class="form-group">
+                    <label for="password">
+                        <span class="label-icon">🔐</span>
+                        Password
+                    </label>
+                    <div class="input-wrapper">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            required
+                            autocomplete="current-password"
+                            class="input-field"
+                        >
+                        <button type="button" class="toggle-password" id="togglePassword">
+                            <span class="eye-icon">👁️</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn-login" id="loginBtn">
+                    <span class="btn-text">Access Dashboard</span>
+                    <span class="btn-icon">→</span>
+                    <div class="btn-loader hidden">
+                        <div class="spinner"></div>
+                    </div>
+                </button>
+            </form>
+
+            <!-- Footer -->
+            <div class="login-footer">
+                <div class="footer-divider">
+                    <span>Demo Credentials</span>
+                </div>
+                <p class="credentials-hint">
+                    Password: <code class="password-code">admin123</code>
+                </p>
+            </div>
+
+            <!-- Decorative Elements -->
+            <div class="card-glow"></div>
+            <div class="corner-accent top-left"></div>
+            <div class="corner-accent top-right"></div>
+            <div class="corner-accent bottom-left"></div>
+            <div class="corner-accent bottom-right"></div>
+        </div>
+
+        <!-- Version Info -->
+        <div class="version-info">
+            <span>v1.0.0</span>
+            <span class="separator">•</span>
+            <span>Secure Connection</span>
+            <span class="secure-icon">🔒</span>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Login Page JavaScript
+         * Handles form submission, password toggle, and animations
+         */
+
+        // DOM Elements
+        const loginForm = document.getElementById('loginForm');
+        const passwordInput = document.getElementById('password');
+        const togglePassword = document.getElementById('togglePassword');
+        const loginBtn = document.getElementById('loginBtn');
+        const errorMessageJs = document.getElementById('errorMessageJs');
+        const errorText = document.getElementById('errorText');
+
+        // Toggle password visibility
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+            this.querySelector('.eye-icon').textContent = type === 'password' ? '👁️' : '🙈';
+        });
+
+        // Handle form submission
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const password = passwordInput.value.trim();
+
+            if (!password) {
+                showError('Please enter a password');
+                return;
+            }
+
+            // Show loading state
+            setLoading(true);
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Success animation before redirect
+                    loginBtn.classList.add('success');
+                    loginBtn.querySelector('.btn-text').textContent = 'Access Granted!';
+
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 500);
+                } else {
+                    setLoading(false);
+                    showError(data.error || 'Invalid password');
+                    passwordInput.classList.add('shake');
+                    setTimeout(() => passwordInput.classList.remove('shake'), 500);
+                }
+            } catch (error) {
+                setLoading(false);
+                showError('Connection error. Please try again.');
+                console.error('Login error:', error);
+            }
+        });
+
+        // Show error message
+        function showError(message) {
+            errorText.textContent = message;
+            errorMessageJs.classList.remove('hidden');
+            errorMessageJs.classList.add('shake');
+            setTimeout(() => errorMessageJs.classList.remove('shake'), 500);
+        }
+
+        // Set loading state
+        function setLoading(loading) {
+            if (loading) {
+                loginBtn.classList.add('loading');
+                loginBtn.querySelector('.btn-text').textContent = 'Authenticating';
+                loginBtn.querySelector('.btn-loader').classList.remove('hidden');
+                loginBtn.querySelector('.btn-icon').classList.add('hidden');
+                passwordInput.disabled = true;
+            } else {
+                loginBtn.classList.remove('loading');
+                loginBtn.querySelector('.btn-text').textContent = 'Access Dashboard';
+                loginBtn.querySelector('.btn-loader').classList.add('hidden');
+                loginBtn.querySelector('.btn-icon').classList.remove('hidden');
+                passwordInput.disabled = false;
+            }
+        }
+
+        // Create floating particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+
+                // Random properties
+                const size = Math.random() * 4 + 1;
+                const posX = Math.random() * 100;
+                const delay = Math.random() * 20;
+                const duration = Math.random() * 15 + 10;
+                const opacity = Math.random() * 0.5 + 0.1;
+
+                particle.style.cssText = `
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${posX}%;
+                    animation-delay: ${delay}s;
+                    animation-duration: ${duration}s;
+                    opacity: ${opacity};
+                `;
+
+                container.appendChild(particle);
+            }
+        }
+
+        // Initialize particles on load
+        createParticles();
+
+        // Focus password input on load
+        setTimeout(() => passwordInput.focus(), 100);
+
+        // Add keyboard shortcut (Enter to submit)
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loginForm.dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+</body>
+</html>

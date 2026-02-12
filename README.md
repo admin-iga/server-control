@@ -1,18 +1,24 @@
 # ⚡ ServerControl
 
-A modern server management dashboard with Flask backend and glassmorphism UI.
+A modern server management dashboard with real SSH support, Flask backend, and glassmorphism UI.
 
-![ServerControl Dashboard](icon.png)
+![ServerControl](https://img.shields.io/badge/version-1.1.0-blue.svg)
+![Python](https://img.shields.io/badge/python-3.8+-green.svg)
+![License](https://img.shields.io/badge/license-MIT-orange.svg)
+
+---
 
 ## ✨ Features
 
-- 🖥️ **Server Management** – Start, stop, and restart servers  
-- 📊 **Real-time Monitoring** – Live CPU and RAM metrics  
-- 🔐 **Authentication** – Password-protected access  
-- 🌙 **Dark UI** – Modern glassmorphism design  
+- 🖥️ **Real Server Management** – Control actual servers via SSH  
+- 📊 **Live Monitoring** – Real-time CPU and RAM metrics  
+- 🔐 **Secure Authentication** – Password-protected dashboard  
+- 🌙 **Modern Dark UI** – Glassmorphism/cyberpunk design  
 - 🔄 **Auto-refresh** – Updates every 3 seconds  
-- 📝 **Action Logging** – All actions are logged  
-- 🔔 **Toast Notifications** – Visual feedback  
+- 📝 **Action Logging** – All operations are logged  
+- 🔔 **Toast Notifications** – Visual feedback for all actions  
+- 🖱️ **Desktop App** – Native window with custom icon  
+- 🐳 **Multi-Service Support** – systemd, Docker, PM2, Supervisor  
 
 ---
 
@@ -20,17 +26,22 @@ A modern server management dashboard with Flask backend and glassmorphism UI.
 
 ```text
 ServerControl/
-├── app.py               # Flask backend
-├── servers.json         # Server configuration
-├── requirements.txt     # Python dependencies
-├── README.md            # This file
-├── logs/                # Log files (auto-created)
+├── app.py                 # Flask backend (main application)
+├── ssh_manager.py         # SSH connection manager
+├── desktop_app.py         # Desktop wrapper (pywebview)
+├── desktop_app_qt.py      # Desktop wrapper (Qt alternative)
+├── servers.json           # Server configuration
+├── requirements.txt       # Python dependencies
+├── icon.png               # Application icon
+├── README.md              # This file
+├── logs/
+│   └── server_actions.log
 ├── templates/
-│   ├── index.html       # Dashboard page
-│   └── login.html       # Login page
+│   ├── index.html
+│   └── login.html
 └── static/
-    ├── style.css        # Styles
-    └── app.js           # Frontend JavaScript
+    ├── style.css
+    └── app.js
 ```
 
 ---
@@ -39,60 +50,45 @@ ServerControl/
 
 ### Prerequisites
 
-- Python 3.8 or higher  
-- pip (Python package manager)
+- Python 3.8+  
+- pip  
+- SSH access to your servers (for real management)
 
-### 🪟 Windows Installation
+### 🪟 Windows
 
 ```cmd
-:: 1. Create project directory
 mkdir ServerControl
 cd ServerControl
 
-:: 2. Create virtual environment
 python -m venv venv
-
-:: 3. Activate virtual environment
 venv\Scripts\activate
 
-:: 4. Install dependencies
-pip install -r requirements.txt
-
-:: 5. Run the application
+pip install flask paramiko pywebview
 python app.py
 ```
 
-### 🐧 Linux/macOS Installation
+### 🐧 Linux / macOS
 
 ```bash
-# 1. Create project directory
 mkdir ServerControl
 cd ServerControl
 
-# 2. Create virtual environment
 python3 -m venv venv
-
-# 3. Activate virtual environment
 source venv/bin/activate
 
-# 4. Install dependencies
-pip install -r requirements.txt
-
-# 5. Run the application
+pip install flask paramiko pywebview
 python app.py
 ```
 
----
+### 🌐 Access the Dashboard
 
-## 🌐 Access the Dashboard
-
-Open your browser and go to:
+Open:
 
 ```
 http://127.0.0.1:5000
 ```
 
-Default login password:
+Login password:
 
 ```
 admin123
@@ -100,43 +96,52 @@ admin123
 
 ---
 
-## 🔌 API Endpoints
+## 🖥️ Desktop Application
 
-| Method | Endpoint                  | Description        |
-|--------|---------------------------|--------------------|
-| GET    | /api/servers              | List all servers   |
-| GET    | /api/servers/{id}         | Get server details |
-| POST   | /api/servers/{id}/start   | Start server       |
-| POST   | /api/servers/{id}/stop    | Stop server        |
-| POST   | /api/servers/{id}/restart | Restart server     |
-| GET    | /api/servers/{id}/status  | Get server status  |
-| GET    | /api/logs                 | Get action logs    |
+```bash
+# Using pywebview (recommended)
+python desktop_app.py
+
+# Qt alternative
+pip install PyQt6 PyQt6-WebEngine
+python desktop_app_qt.py
+```
+
+Place `icon.png` in the project root (recommended size: 256x256).
 
 ---
 
-## ⚙️ Configuration
-
-### 🔑 Changing the Password
-
-Edit `app.py`:
-
-```python
-ADMIN_PASSWORD = "your-new-password"
-```
-
-### ➕ Adding Servers
-
-Edit `servers.json`:
+## ⚙️ Configuration (servers.json)
 
 ```json
 {
+  "settings": {
+    "use_real_ssh": true,
+    "default_ssh_port": 22,
+    "default_timeout": 10,
+    "cache_metrics_seconds": 5
+  },
   "servers": [
     {
-      "id": "unique-id",
-      "name": "Server Name",
+      "id": "unique-server-id",
+      "name": "My Server",
       "ip": "192.168.1.100",
       "type": "Web Server",
-      "initial_status": "online"
+      "description": "Server description",
+      "initial_status": "online",
+      "ssh": {
+        "enabled": true,
+        "port": 22,
+        "username": "admin",
+        "auth_method": "password",
+        "password": "your-password",
+        "key_file": null,
+        "key_passphrase": null
+      },
+      "service": {
+        "name": "nginx",
+        "type": "systemd"
+      }
     }
   ]
 }
@@ -144,81 +149,92 @@ Edit `servers.json`:
 
 ---
 
-## 🧩 Server Types (Icons)
+## 🔐 Authentication Examples
 
-- Web Server 🌐  
-- Database 🗄️  
-- Gateway 🚪  
-- Redis ⚡  
-- Storage 💾  
-- Email 📧  
-- Monitoring 📊  
+### Password
+
+```json
+{
+  "ssh": {
+    "enabled": true,
+    "username": "admin",
+    "auth_method": "password",
+    "password": "your-secure-password"
+  }
+}
+```
+
+### SSH Key
+
+```json
+{
+  "ssh": {
+    "enabled": true,
+    "username": "admin",
+    "auth_method": "key_file",
+    "key_file": "~/.ssh/id_rsa"
+  }
+}
+```
+
+---
+
+## 🔌 API Reference
+
+| Method | Endpoint                         | Description              |
+|--------|----------------------------------|--------------------------|
+| GET    | /api/servers                     | List all servers         |
+| GET    | /api/servers/{id}                | Get server details       |
+| GET    | /api/servers/{id}/status         | Get server status        |
+| POST   | /api/servers/{id}/start          | Start service            |
+| POST   | /api/servers/{id}/stop           | Stop service             |
+| POST   | /api/servers/{id}/restart        | Restart service          |
+| POST   | /api/servers/{id}/test-connection| Test SSH connection      |
+| GET    | /api/logs                        | Get recent logs          |
 
 ---
 
 ## 🛠 Troubleshooting
 
-### Port already in use
-
 ```bash
-# Windows:
-netstat -ano | findstr :5000
-
-# Linux/macOS:
+# Port in use
 lsof -i :5000
-```
+kill -9 <PID>
 
-Run on another port:
-
-```bash
-python app.py --port 5001
-```
-
-### Permission denied (Linux/macOS)
-
-```bash
-chmod +x app.py
-```
-
-### Module not found
-
-```bash
-pip install -r requirements.txt
+# SSH key permissions
+chmod 600 ~/.ssh/id_rsa
 ```
 
 ---
 
-## 🔐 Security Notes
+## 🔒 Security Recommendations
 
-⚠️ For production use:
-
-- Change the default password  
-- Change the Flask secret key  
+- Change default password  
+- Change Flask secret key  
 - Use HTTPS  
-- Use a proper WSGI server (Gunicorn)  
-- Implement proper user management  
+- Prefer SSH keys over passwords  
+- Limit SSH permissions  
 
 ---
 
-## 🚢 Production Deployment
+## 📦 Requirements
 
-```bash
-# Using Gunicorn (Linux/macOS)
-gunicorn -w 4 -b 0.0.0.0:5000 app:app
-
-# With SSL
-gunicorn -w 4 -b 0.0.0.0:443 --certfile=cert.pem --keyfile=key.pem app:app
+```text
+Flask==3.0.0
+paramiko==3.4.0
+pywebview==4.4.1
+gunicorn==21.2.0
+python-dotenv==1.0.0
+cryptography>=41.0.0
+bcrypt>=4.0.0
+pynacl>=1.5.0
 ```
 
 ---
 
 ## 📜 License
 
-MIT License – Feel free to use and modify.
-
-## 📦 Version
-
-**1.0.0**
+MIT License
 
 ---
 

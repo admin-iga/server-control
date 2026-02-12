@@ -1,4 +1,10 @@
 {
+  "settings": {
+    "use_real_ssh": true,
+    "default_ssh_port": 22,
+    "default_timeout": 10,
+    "cache_metrics_seconds": 5
+  },
   "servers": [
     {
       "id": "srv-web-001",
@@ -6,7 +12,20 @@
       "ip": "192.168.1.10",
       "type": "Web Server",
       "description": "Primary web server running Nginx",
-      "initial_status": "online"
+      "initial_status": "online",
+      "ssh": {
+        "enabled": true,
+        "port": 22,
+        "username": "admin",
+        "auth_method": "password",
+        "password": "your-pass-here",
+        "key_file": null,
+        "key_passphrase": null
+      },
+      "service": {
+        "name": "nginx",
+        "type": "systemd"
+      }
     },
     {
       "id": "srv-db-001",
@@ -14,55 +33,36 @@
       "ip": "192.168.1.20",
       "type": "Database",
       "description": "PostgreSQL primary database",
-      "initial_status": "online"
+      "initial_status": "online",
+      "ssh": {
+        "enabled": false,
+        "_comment": "Disabled - enable and configure when ready",
+        "port": 22,
+        "username": "postgres",
+        "auth_method": "password",
+        "password": "db-password",
+        "key_file": null,
+        "key_passphrase": null
+      },
+      "service": {
+        "name": "postgresql",
+        "type": "systemd"
+      }
     },
     {
-      "id": "srv-db-002",
-      "name": "Database Replica",
-      "ip": "192.168.1.21",
-      "type": "Database",
-      "description": "PostgreSQL read replica",
-      "initial_status": "online"
-    },
-    {
-      "id": "srv-api-001",
-      "name": "API Gateway",
-      "ip": "192.168.1.30",
-      "type": "Gateway",
-      "description": "Kong API Gateway",
-      "initial_status": "offline"
-    },
-    {
-      "id": "srv-cache-001",
-      "name": "Cache Server",
-      "ip": "192.168.1.40",
-      "type": "Redis",
-      "description": "Redis caching layer",
-      "initial_status": "online"
-    },
-    {
-      "id": "srv-storage-001",
-      "name": "File Storage",
-      "ip": "192.168.1.50",
-      "type": "Storage",
-      "description": "MinIO object storage",
-      "initial_status": "offline"
-    },
-    {
-      "id": "srv-mail-001",
-      "name": "Mail Server",
-      "ip": "192.168.1.60",
-      "type": "Email",
-      "description": "Postfix mail server",
-      "initial_status": "online"
-    },
-    {
-      "id": "srv-monitor-001",
-      "name": "Monitoring Stack",
-      "ip": "192.168.1.70",
-      "type": "Monitoring",
-      "description": "Prometheus + Grafana",
-      "initial_status": "online"
+      "id": "srv-local-mock",
+      "name": "Local Test Server",
+      "ip": "127.0.0.1",
+      "type": "Development",
+      "description": "Local mock server for testing",
+      "initial_status": "online",
+      "ssh": {
+        "enabled": false
+      },
+      "service": {
+        "name": null,
+        "type": "mock"
+      }
     }
   ]
 }

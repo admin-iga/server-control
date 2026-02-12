@@ -1,0 +1,11 @@
+# ServerControl - Python Dependencies
+# ===================================
+
+# Web Framework
+Flask==3.0.0
+
+# WSGI Server (for production)
+gunicorn==21.2.0
+
+# Utilities (optional, for development)
+python-dotenv==1.0.0

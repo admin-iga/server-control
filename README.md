@@ -2,7 +2,8 @@
 
 A modern server management dashboard with real SSH support, Flask backend, and glassmorphism UI.
 
-![ServerControl](https://img.shields.io/badge/version-1.1.1-blue.svg)
+![ServerControl Basic](https://img.shields.io/badge/edition-BASIC-blue.svg)
+![ServerControl](https://img.shields.io/badge/version-1.1.1-purple.svg)
 ![Python](https://img.shields.io/badge/python-3.8+-green.svg)
 ![License](https://img.shields.io/badge/license-MIT-orange.svg)
 

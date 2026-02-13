@@ -1,146 +1,143 @@
-# ⚡ ServerControl
+# ⚡ ServerControl Pro
 
-A modern server management dashboard with real SSH support, Flask backend, and glassmorphism UI.
+**Professional Server Management Suite**  
+Desktop application with **Tkinter UI** and **full SSH-based server control**.
 
-![ServerControl](https://img.shields.io/badge/version-1.1.1-blue.svg)
-![Python](https://img.shields.io/badge/python-3.8+-green.svg)
-![License](https://img.shields.io/badge/license-MIT-orange.svg)
+![ServerControl Pro](https://img.shields.io/badge/edition-PRO-gold.svg)
+![Version](https://img.shields.io/badge/version-1.0.0--pro-purple.svg)
+![Python](https://img.shields.io/badge/python-3.9+-green.svg)
+![License](https://img.shields.io/badge/license-Commercial-red.svg)
 
 ---
 
-## ✨ Features
+## 🚀 About ServerControl Pro
 
-- 🖥️ **Real Server Management** – Control actual servers via SSH  
-- 📊 **Live Monitoring** – Real-time CPU and RAM metrics  
-- 🔐 **Secure Authentication** – Password-protected dashboard  
-- 🌙 **Modern Dark UI** – Glassmorphism/cyberpunk design  
-- 🔄 **Auto-refresh** – Updates every 3 seconds  
-- 📝 **Action Logging** – All operations are logged  
-- 🔔 **Toast Notifications** – Visual feedback for all actions  
-- 🖱️ **Desktop App** – Native window with custom icon  
-- 🐳 **Multi-Service Support** – systemd, Docker, PM2, Supervisor  
+**ServerControl Pro** is a professional desktop application for system administrators and DevOps engineers.  
+It provides **full remote server management via SSH**, a **native Tkinter interface**, advanced security features, and production-grade reliability.
+
+Unlike the Community edition, Pro is designed for **real infrastructure management**, not demos.
+
+---
+
+## ✨ Key Features (Pro)
+
+- 🔗 **Full SSH Server Control**  
+  Start, stop, restart and manage real services on remote servers
+
+- 🖥️ **Native Desktop App (Tkinter)**  
+  Fast, lightweight, no browser required
+
+- 📊 **Advanced Monitoring**  
+  Real CPU, RAM, disk, uptime, load average
+
+- 🧠 **Persistent SSH Connections**  
+  Smart connection pooling for high performance
+
+- 🔐 **Enterprise-Grade Security**  
+  - SSH key authentication  
+  - Encrypted credential storage  
+  - Role-based access (Admin / Operator / Viewer)
+
+- 🐳 **Multi-Service Orchestration**  
+  systemd, Docker, PM2, Supervisor, custom commands
+
+- 📁 **Server Groups & Tags**  
+  Organize servers by environment (prod, staging, dev)
+
+- 🧾 **Audit Logs & History**  
+  Full action history with timestamps and users
+
+- 🧩 **Plugin System (Pro)**  
+  Extend with custom scripts and integrations
+
+- 🧠 **Offline Mode (Read-only)**  
+  View last known states without connecting
 
 ---
 
 ## 📁 Project Structure
 
 ```text
-ServerControl/
-├── app.py                 # Flask backend (main application)
-├── ssh_manager.py         # SSH connection manager
-├── desktop_app.py         # Desktop wrapper (pywebview)
-├── desktop_app_qt.py      # Desktop wrapper (Qt alternative)
-├── servers.json           # Server configuration
-├── requirements.txt       # Python dependencies
-├── icon.png               # Application icon
-├── README.md              # This file
+ServerControl-Pro/
+├── main.py                # Application entry point (Tkinter)
+├── ssh_manager.py         # Advanced SSH manager
+├── ui/
+│   ├── app.py             # Tkinter UI logic
+│   └── widgets.py         # Custom widgets
+├── core/
+│   ├── services.py        # Service control logic
+│   ├── metrics.py         # Metrics collection
+│   └── security.py        # Encryption & auth
+├── config/
+│   ├── servers.json       # Server configuration
+│   └── roles.json         # User roles & permissions
+├── assets/
+│   └── icon.png           # Application icon
 ├── logs/
-│   └── server_actions.log
-├── templates/
-│   ├── index.html
-│   └── login.html
-└── static/
-    ├── style.css
-    └── app.js
+│   └── audit.log          # Audit logs
+├── requirements.txt
+└── README.md
 ```
 
 ---
 
-## 🚀 Quick Start
+## 🖥️ System Requirements
 
-### Prerequisites
+- Windows 10/11, Linux, macOS  
+- Python 3.9+  
+- SSH access to target servers  
+- Network access to managed servers  
 
-- Python 3.8+  
-- pip  
-- SSH access to your servers (for real management)
+---
 
-### 🪟 Windows
+## ⚙️ Installation
 
-```cmd
-mkdir ServerControl
-cd ServerControl
+```bash
+git clone <private-repo-url>
+cd ServerControl-Pro
 
 python -m venv venv
-venv\Scripts\activate
+source venv/bin/activate  # Windows: venv\Scripts\activate
 
-pip install flask paramiko pywebview
-python app.py
-```
-
-### 🐧 Linux / macOS
-
-```bash
-mkdir ServerControl
-cd ServerControl
-
-python3 -m venv venv
-source venv/bin/activate
-
-pip install flask paramiko pywebview
-python app.py
-```
-
-### 🌐 Access the Dashboard
-
-Open:
-
-```
-http://127.0.0.1:5000
-```
-
-Login password:
-
-```
-admin123
+pip install -r requirements.txt
+python main.py
 ```
 
 ---
 
-## 🖥️ Desktop Application
+## 🔐 Security Model
 
-```bash
-# Using pywebview (recommended)
-python desktop_app.py
-
-# Qt alternative
-pip install PyQt6 PyQt6-WebEngine
-python desktop_app_qt.py
-```
-
+- 🔑 **SSH Key Authentication** (recommended)  
+- 🔒 **Encrypted Secrets Storage**  
+- 👤 **User Roles**
+  - Admin – full control  
+  - Operator – manage services  
+  - Viewer – read-only  
 
 ---
 
-## ⚙️ Configuration (servers.json)
+## 🧰 Configuration
+
+### Example `servers.json`
 
 ```json
 {
-  "settings": {
-    "use_real_ssh": true,
-    "default_ssh_port": 22,
-    "default_timeout": 10,
-    "cache_metrics_seconds": 5
-  },
   "servers": [
     {
-      "id": "unique-server-id",
-      "name": "My Server",
-      "ip": "192.168.1.100",
-      "type": "Web Server",
-      "description": "Server description",
-      "initial_status": "online",
+      "id": "prod-web-01",
+      "name": "Production Web Server",
+      "host": "10.0.0.5",
       "ssh": {
-        "enabled": true,
         "port": 22,
-        "username": "admin",
-        "auth_method": "password",
-        "password": "your-password",
-        "key_file": null,
-        "key_passphrase": null
+        "username": "svc_admin",
+        "auth_method": "key_file",
+        "key_file": "~/.ssh/id_ed25519"
       },
-      "service": {
-        "name": "nginx",
-        "type": "systemd"
-      }
+      "services": [
+        { "name": "nginx", "type": "systemd" },
+        { "name": "docker", "type": "systemd" }
+      ],
+      "tags": ["prod", "web"]
     }
   ]
 }
@@ -148,93 +145,50 @@ python desktop_app_qt.py
 
 ---
 
-## 🔐 Authentication Examples
+## 🛡️ Best Practices
 
-### Password
-
-```json
-{
-  "ssh": {
-    "enabled": true,
-    "username": "admin",
-    "auth_method": "password",
-    "password": "your-secure-password"
-  }
-}
-```
-
-### SSH Key
-
-```json
-{
-  "ssh": {
-    "enabled": true,
-    "username": "admin",
-    "auth_method": "key_file",
-    "key_file": "~/.ssh/id_rsa"
-  }
-}
-```
+- Use **SSH keys** instead of passwords  
+- Create **dedicated service users** on servers  
+- Use **passwordless sudo** for controlled commands  
+- Restrict network access (VPN / firewall)  
+- Regularly rotate keys  
 
 ---
 
-## 🔌 API Reference
+## 📦 Packaging
 
-| Method | Endpoint                         | Description              |
-|--------|----------------------------------|--------------------------|
-| GET    | /api/servers                     | List all servers         |
-| GET    | /api/servers/{id}                | Get server details       |
-| GET    | /api/servers/{id}/status         | Get server status        |
-| POST   | /api/servers/{id}/start          | Start service            |
-| POST   | /api/servers/{id}/stop           | Stop service             |
-| POST   | /api/servers/{id}/restart        | Restart service          |
-| POST   | /api/servers/{id}/test-connection| Test SSH connection      |
-| GET    | /api/logs                        | Get recent logs          |
-
----
-
-## 🛠 Troubleshooting
+Create standalone desktop app:
 
 ```bash
-# Port in use
-lsof -i :5000
-kill -9 <PID>
-
-# SSH key permissions
-chmod 600 ~/.ssh/id_rsa
+pip install pyinstaller
+pyinstaller --onefile --windowed --icon assets/icon.png main.py
 ```
 
 ---
 
-## 🔒 Security Recommendations
+## 📄 License
 
-- Change default password  
-- Change Flask secret key  
-- Use HTTPS  
-- Prefer SSH keys over passwords  
-- Limit SSH permissions  
+**Commercial License**  
+This software is proprietary. Redistribution is prohibited without permission.
 
 ---
 
-## 📦 Requirements
+## 🆘 Support
 
-```text
-Flask==3.0.0
-paramiko==3.4.0
-pywebview==4.4.1
-gunicorn==21.2.0
-python-dotenv==1.0.0
-cryptography>=41.0.0
-bcrypt>=4.0.0
-pynacl>=1.5.0
-```
+For Pro support, enterprise features, and integrations:  
+📧 support@servercontrol.pro  
+🌐 https://servercontrol.pro
 
 ---
 
-## 📜 License
+## 🗺️ Roadmap
 
-MIT License
+- 🌐 Web-based Pro dashboard  
+- 📱 Mobile companion app  
+- 🔔 Alerting & notifications (Telegram, Slack, Email)  
+- 📈 Historical metrics & charts  
+- 🧠 AI-assisted diagnostics  
 
 ---
 
-Made with ❤️ by ServerControl Team
+© 2026 ServerControl Pro. All rights reserved.

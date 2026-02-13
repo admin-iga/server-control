@@ -107,7 +107,6 @@ pip install PyQt6 PyQt6-WebEngine
 python desktop_app_qt.py
 ```
 
-Place `icon.png` in the project root (recommended size: 256x256).
 
 ---
 

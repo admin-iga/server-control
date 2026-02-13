@@ -95,7 +95,7 @@ ServerControl-Pro/
 ## ⚙️ Installation
 
 ```bash
-git clone <private-repo-url>
+git clone https://github.com/admin-iga/server-control/tree/Pro
 cd ServerControl-Pro
 
 python -m venv venv
@@ -174,13 +174,6 @@ pyinstaller --onefile --windowed --icon assets/icon.png main.py
 This software is proprietary. Redistribution is prohibited without permission.
 
 ---
-
-## 🆘 Support
-
-For Pro support, enterprise features, and integrations:  
-📧 support@servercontrol.pro  
-🌐 https://servercontrol.pro
-
 ---
 
 ## 🗺️ Roadmap

@@ -62,9 +62,11 @@ ServerControl-Pro/
 ├── main.py                # Application entry point (Tkinter)
 ├── ssh_manager.py         # Advanced SSH manager
 ├── ui/
+│   ├── __init__.py
 │   ├── app.py             # Tkinter UI logic
 │   └── widgets.py         # Custom widgets
 ├── core/
+│   ├── __init__.py
 │   ├── services.py        # Service control logic
 │   ├── metrics.py         # Metrics collection
 │   └── security.py        # Encryption & auth

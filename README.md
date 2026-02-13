@@ -6,7 +6,7 @@ Desktop application with **Tkinter UI** and **full SSH-based server control**.
 ![ServerControl Pro](https://img.shields.io/badge/edition-PRO-gold.svg)
 ![Version](https://img.shields.io/badge/version-1.0.0--pro-purple.svg)
 ![Python](https://img.shields.io/badge/python-3.9+-green.svg)
-![License](https://img.shields.io/badge/license-Commercial-red.svg)
+![License](https://img.shields.io/badge/license-MIT-red.svg)
 
 ---
 

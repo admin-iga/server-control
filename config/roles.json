@@ -1,0 +1,38 @@
+{
+  "roles": {
+    "admin": {
+      "name": "Administrator",
+      "description": "Full system access",
+      "permissions": [
+        "view_servers",
+        "view_metrics",
+        "start_service",
+        "stop_service",
+        "restart_service",
+        "edit_config",
+        "manage_users",
+        "view_audit_log"
+      ]
+    },
+    "operator": {
+      "name": "Operator",
+      "description": "Service control access",
+      "permissions": [
+        "view_servers",
+        "view_metrics",
+        "start_service",
+        "stop_service",
+        "restart_service"
+      ]
+    },
+    "viewer": {
+      "name": "Viewer",
+      "description": "Read-only access",
+      "permissions": [
+        "view_servers",
+        "view_metrics"
+      ]
+    }
+  },
+  "default_role": "viewer"
+}

@@ -1,0 +1,143 @@
+{
+  "settings": {
+    "refresh_interval": 30,
+    "connection_timeout": 10,
+    "max_connections": 50
+  },
+  "servers": [
+    {
+      "id": "web-prod-01",
+      "name": "Web Server Production",
+      "ip": "192.168.89.20",
+      "type": "Web Server",
+      "group": "prod",
+      "description": "Primary production web server",
+      "ssh": {
+        "port": 22,
+        "username": "admin",
+        "auth_method": "password",
+        "password": "your-pass-here",
+        "key_passphrase": null,
+        "key_file": null
+      },
+      "service": {
+        "name": "nginx",
+        "type": "systemd"
+      }
+    },
+    {
+      "id": "web-prod-02",
+      "name": "Web Server Backup",
+      "ip": "192.168.1.11",
+      "type": "Web Server",
+      "group": "prod",
+      "description": "Backup production web server",
+      "ssh": {
+        "port": 22,
+        "username": "admin",
+        "auth_method": "password",
+        "key_file": null
+      },
+      "service": {
+        "name": "nginx",
+        "type": "systemd"
+      }
+    },
+    {
+      "id": "db-prod-01",
+      "name": "Database Primary",
+      "ip": "192.168.1.20",
+      "type": "Database",
+      "group": "prod",
+      "description": "PostgreSQL primary database",
+      "ssh": {
+        "port": 22,
+        "username": "dbadmin",
+        "auth_method": "key_file",
+        "key_file": "~/.ssh/id_rsa"
+      },
+      "service": {
+        "name": "postgresql",
+        "type": "systemd"
+      }
+    },
+    {
+      "id": "app-staging-01",
+      "name": "App Server Staging",
+      "ip": "192.168.2.10",
+      "type": "Application",
+      "group": "staging",
+      "description": "Node.js application server",
+      "ssh": {
+        "port": 22,
+        "username": "deploy",
+        "auth_method": "password",
+        "key_file": null
+      },
+      "service": {
+        "name": "my-app",
+        "type": "pm2"
+      }
+    },
+    {
+      "id": "docker-staging-01",
+      "name": "Docker Host Staging",
+      "ip": "192.168.2.20",
+      "type": "Container Host",
+      "group": "staging",
+      "description": "Docker container host",
+      "ssh": {
+        "port": 22,
+        "username": "docker",
+        "auth_method": "password",
+        "key_file": null
+      },
+      "service": {
+        "name": "api-container",
+        "type": "docker"
+      }
+    },
+    {
+      "id": "dev-01",
+      "name": "Development Server",
+      "ip": "192.168.3.10",
+      "type": "Development",
+      "group": "dev",
+      "description": "Development environment",
+      "ssh": {
+        "port": 22,
+        "username": "developer",
+        "auth_method": "password",
+        "key_file": null
+      },
+      "service": {
+        "name": "dev-service",
+        "type": "supervisor"
+      }
+    },
+    {
+      "id": "custom-01",
+      "name": "Custom Service Server",
+      "ip": "192.168.3.20",
+      "type": "Custom",
+      "group": "dev",
+      "description": "Server with custom start/stop commands",
+      "ssh": {
+        "port": 22,
+        "username": "admin",
+        "auth_method": "password",
+        "key_file": null
+      },
+      "service": {
+        "name": "myservice",
+        "type": "custom",
+        "commands": {
+          "start": "/opt/myservice/start.sh",
+          "stop": "/opt/myservice/stop.sh",
+          "restart": "/opt/myservice/restart.sh",
+          "status": "/opt/myservice/status.sh"
+        }
+      }
+    }
+  ]
+}
